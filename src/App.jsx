@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
-// Import alle sidene fra /src
 import Homepage from './heim-vertskap-homepage-v3-drifter-fokus.jsx';
 import FullDrift from './heim-vertskap-full-drift-rewrite.jsx';
 import OmOss from './heim-vertskap-om-oss.jsx';
@@ -15,21 +14,18 @@ function AppContent() {
 
   useEffect(() => {
     const handleClick = (e) => {
-      const button = e.target.closest('button');
-      if (!button) return;
-
-      const text = button.textContent || '';
+      const el = e.target.closest('button') || e.target.closest('a');
+      if (!el) return;
       
-      // Map button text to routes
-      if (text.includes('Book gratis befaring') || text.includes('Møt oss') || text.includes('Book')) {
-        navigate('/full-drift');
-      } else if (text.includes('Les mer om Full Drift')) {
-        navigate('/full-drift');
-      } else if (text.includes('Kontakt') || text.includes('Diskuter')) {
-        navigate('/om-oss');
-      } else if (text.includes('Kom i gang')) {
-        navigate('/oppstart');
-      }
+      const text = el.textContent?.toLowerCase() || '';
+
+      if (text.includes('om oss')) navigate('/om-oss');
+      else if (text.includes('pakker')) navigate('/pakker');
+      else if (text.includes('full drift')) navigate('/full-drift');
+      else if (text.includes('optimalisering')) navigate('/optimalisering');
+      else if (text.includes('oppstart')) navigate('/oppstart');
+      else if (text.includes('partner')) navigate('/partner');
+      else if (text.includes('book') || text.includes('møt') || text.includes('kom i gang') || text.includes('kontakt') || text.includes('diskuter')) navigate('/full-drift');
     };
 
     document.addEventListener('click', handleClick);
