@@ -18,14 +18,21 @@ function AppContent() {
       if (!el) return;
       
       const text = el.textContent?.toLowerCase() || '';
+      const parentText = el.parentElement?.textContent?.toLowerCase() || '';
 
       if (text.includes('om oss')) navigate('/om-oss');
       else if (text.includes('pakker')) navigate('/pakker');
       else if (text.includes('full drift')) navigate('/full-drift');
-      else if (text.includes('optimalisering')) navigate('/optimalisering');
-      else if (text.includes('oppstart')) navigate('/oppstart');
-      else if (text.includes('partner')) navigate('/partner');
-      else if (text.includes('book') || text.includes('møt') || text.includes('kom i gang') || text.includes('kontakt') || text.includes('diskuter')) navigate('/full-drift');
+      else if (text.includes('diskuter')) navigate('/partner');
+      else if (text.includes('les mer')) {
+        if (parentText.includes('optimalisering')) navigate('/optimalisering');
+        else if (parentText.includes('oppstart')) navigate('/oppstart');
+        else if (parentText.includes('partner') || parentText.includes('multi')) navigate('/partner');
+        else navigate('/full-drift');
+      }
+      else if (text.includes('book') || text.includes('møt') || text.includes('kom i gang') || text.includes('kontakt')) {
+        navigate('/full-drift');
+      }
     };
 
     document.addEventListener('click', handleClick);
