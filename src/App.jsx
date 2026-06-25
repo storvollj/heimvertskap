@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import Homepage from './heim-vertskap-homepage-v3-drifter-fokus.jsx';
 import FullDrift from './heim-vertskap-full-drift-rewrite.jsx';
@@ -11,6 +11,11 @@ import Pakker from './heim-vertskap-pakker.jsx';
 
 function AppContent() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleClick = (e) => {
