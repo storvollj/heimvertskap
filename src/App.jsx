@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
-import Homepage from './heim-vertskap-homepage-v3-drifter-fokus.jsx';
-import FullDrift from './heim-vertskap-full-drift-rewrite.jsx';
-import OmOss from './heim-vertskap-om-oss.jsx';
-import Optimalisering from './heim-vertskap-optimalisering.jsx';
-import Oppstart from './heim-vertskap-oppstart.jsx';
-import Partner from './heim-vertskap-partner.jsx';
-import Pakker from './heim-vertskap-pakker.jsx';
+import Homepage from './heim-vertskap-homepage-rewrite-v2.jsx';
+import FullDrift from './heim-vertskap-full-drift-v3.jsx';
+import OmOss from './heim-vertskap-om-oss-v2.jsx';
+import Optimalisering from './heim-vertskap-optimalisering-v2.jsx';
+import Oppstart from './heim-vertskap-oppstart-v2.jsx';
+import Partner from './heim-vertskap-partner-v2.jsx';
+import Pakker from './heim-vertskap-pakker-sammenligning-v2.jsx';
 
 function AppContent() {
   const navigate = useNavigate();
@@ -22,21 +22,60 @@ function AppContent() {
       const el = e.target.closest('button') || e.target.closest('a');
       if (!el) return;
       
-      const text = el.textContent?.toLowerCase() || '';
-      const parentText = el.parentElement?.textContent?.toLowerCase() || '';
+      const text = el.textContent?.toLowerCase().trim() || '';
+      const parent = el.parentElement?.textContent?.toLowerCase() || '';
+      const grandparent = el.parentElement?.parentElement?.textContent?.toLowerCase() || '';
 
-      if (text.includes('om oss')) navigate('/om-oss');
-      else if (text.includes('pakker')) navigate('/pakker');
-      else if (text.includes('full drift')) navigate('/full-drift');
-      else if (text.includes('diskuter')) navigate('/partner');
-      else if (text.includes('les mer')) {
-        if (parentText.includes('optimalisering')) navigate('/optimalisering');
-        else if (parentText.includes('oppstart')) navigate('/oppstart');
-        else if (parentText.includes('partner') || parentText.includes('multi')) navigate('/partner');
+      // Exact matches first (header nav)
+      if (text === '‚Üê hjem') {
+        e.preventDefault();
+        navigate('/');
+      }
+      else if (text === 'full drift') {
+        e.preventDefault();
+        navigate('/full-drift');
+      }
+      else if (text === 'optimalisering') {
+        e.preventDefault();
+        navigate('/optimalisering');
+      }
+      else if (text === 'oppstart') {
+        e.preventDefault();
+        navigate('/oppstart');
+      }
+      else if (text === 'pakker') {
+        e.preventDefault();
+        navigate('/pakker');
+      }
+      else if (text === 'om oss') {
+        e.preventDefault();
+        navigate('/om-oss');
+      }
+      
+      // CTA & button matches
+      else if (text.includes('kom i gang')) {
+        e.preventDefault();
+        navigate('/oppstart');
+      }
+      else if (text.includes('diskuter') || (text.includes('kontakt') && text.includes('info'))) {
+        e.preventDefault();
+        navigate('/partner');
+      }
+      else if (text.includes('book') || text.includes('befaring')) {
+        e.preventDefault();
+        if (parent.includes('partner') || grandparent.includes('partner')) navigate('/partner');
         else navigate('/full-drift');
       }
-      else if (text.includes('book') || text.includes('møt') || text.includes('kom i gang') || text.includes('kontakt')) {
+      else if (text.includes('m√∏t')) {
+        e.preventDefault();
         navigate('/full-drift');
+      }
+      else if (text.includes('les mer')) {
+        e.preventDefault();
+        if (parent.includes('optimalisering') || grandparent.includes('optimalisering')) navigate('/optimalisering');
+        else if (parent.includes('oppstart') || grandparent.includes('oppstart')) navigate('/oppstart');
+        else if (parent.includes('partner') || parent.includes('portef√∏lje') || grandparent.includes('partner')) navigate('/partner');
+        else navigate('/full-drift');
       }
     };
 
@@ -64,3 +103,4 @@ export default function App() {
     </Router>
   );
 }
+
